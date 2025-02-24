@@ -7,8 +7,8 @@ A CLI tool to repeatedly run Laravel tests until they fail. Useful for debugging
 Clone the repository and navigate into the project directory:
 
 ```sh
-git clone https://github.com/kazuto/flaky
-cd flaky
+git clone https://github.com/kazuto/laravel-flaky-helper
+cd larave-flaky-helper
 ```
 
 Build the executable:
