@@ -8,7 +8,7 @@ Clone the repository and navigate into the project directory:
 
 ```sh
 git clone https://github.com/kazuto/laravel-flaky-helper
-cd larave-flaky-helper
+cd laravel-flaky-helper
 ```
 
 Build the executable:
