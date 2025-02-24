@@ -36,7 +36,8 @@ func main() {
 func runCommandUntilFail(maxRuns int, command string, args ...string) {
 	red := "\033[31m"
 	green := "\033[32m"
-	gray := "\033[37m" // Resets color back to default
+	gray := "\033[37m"
+	reset := "\033[0m" // Resets color back to default
 
 	i := 1
 
@@ -52,10 +53,10 @@ func runCommandUntilFail(maxRuns int, command string, args ...string) {
 		output := out.String() + stderr.String() // Combine stdout and stderr
 
 		if strings.Contains(output, "FAIL") {
-			fmt.Printf("%s%s Run %d failed\033[0m\n", red, gray, i)
+			fmt.Printf("%s%s Run %d failed!%s\n", red, gray, i, reset)
 			break
 		} else {
-			fmt.Printf("%s%s Run %d passed\033[0m\n", green, gray, i)
+			fmt.Printf("%s%s Run %d passed!%s\n", green, gray, i, reset)
 			i++
 		}
 
