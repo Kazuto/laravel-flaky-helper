@@ -4,6 +4,16 @@ A CLI tool to repeatedly run Laravel tests until they fail. Useful for debugging
 
 ## Installation
 
+### Download
+Download and extract the latest [release](https://github.com/Kazuto/laravel-flaky-helper/releases).
+
+Move the script to a directory in your `$PATH` for local usage:
+
+```sh
+mv flaky /usr/local/bin
+```
+
+### Build from Source
 Clone the repository and navigate into the project directory:
 
 ```sh
