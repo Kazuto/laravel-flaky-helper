@@ -1,70 +1,91 @@
-# Laravel Flaky Test Helper
+# 🧪 Laravel Flaky Test Helper
 
-A CLI tool to repeatedly run Laravel tests until they fail. Useful for debugging intermittent test failures in your application.
+A simple CLI tool to repeatedly run Laravel tests until they fail — perfect for debugging intermittent, flaky tests in your Laravel application.
 
-## Installation
+---
 
-### Download
+## 🚀 Installation
+
+### 📦 Download Prebuilt Binary
+
 Download and extract the latest [release](https://github.com/Kazuto/laravel-flaky-helper/releases).
 
-Move the script to a directory in your `$PATH` for local usage:
+Then move it into a directory in your `$PATH`:
 
-```sh
+```bash
 mv flaky /usr/local/bin
 ```
 
-### Build from Source
-Clone the repository and navigate into the project directory:
+### 🛠️ Build from Source
 
-```sh
-git clone https://github.com/kazuto/laravel-flaky-helper
+```bash
+git clone https://github.com/Kazuto/laravel-flaky-helper.git
 cd laravel-flaky-helper
-```
 
-Build the executable:
-
-```sh
 go build -o flaky
-```
-
-Move the script to a directory in your `$PATH` for local usage:
-
-```sh
 mv flaky /usr/local/bin
 ```
 
-## Usage
+---
 
-Run a specific test repeatedly until failure:
+## ⚙️ Usage
 
-```sh
+Run a test repeatedly until it fails:
+
+```bash
 flaky ExampleTest
 ```
 
-### Options
+### ✅ Options
 
-- `--max <count>`: Maximum number of times to run the test before stopping (default: infinite)
+| Flag      | Description                                                 |
+| --------- | ----------------------------------------------------------- |
+| `--max N` | Maximum number of runs before stopping (default: unlimited) |
 
-Example with a limit and delay:
+#### Example:
 
-```sh
+```bash
 flaky --max 10 ExampleTest
 ```
 
-## Requirements
+<img width="516" height="273" alt="image" src="https://github.com/user-attachments/assets/3da21489-31d5-4091-abb0-0a875ff7d9c1" />
 
-- PHP 8+
-- Laravel 9+
-- PHPUnit installed in the project
 
-## How It Works
+---
 
-The tool runs the specified test repeatedly using PHPUnit until it fails or reaches the maximum iteration limit. This helps in identifying flaky tests that pass inconsistently.
+## 📋 Requirements
 
-## Contributing
+* PHP 8.0+
+* Laravel 9+
+* PHPUnit installed in your Laravel project
 
-Feel free to submit issues or pull requests to improve the tool.
+---
 
-## License
+## 🧠 How It Works
+
+This tool runs:
+
+```bash
+php artisan test --filter=YourTestName
+```
+
+...in a loop until it either:
+
+* Fails (and stops immediately), or
+* Reaches the optional `--max` limit
+
+It helps expose flaky tests that sometimes pass and sometimes fail depending on runtime order, data conditions, or environment.
+
+---
+
+## 🤝 Contributing
+
+Contributions, feedback, and pull requests are welcome!
+Please open an [issue](https://github.com/Kazuto/laravel-flaky-helper/issues) or submit a PR.
+
+---
+
+## 📄 License
 
 MIT License
+© [Kazuto](https://github.com/Kazuto)
