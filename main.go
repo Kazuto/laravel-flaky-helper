@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 )
 
@@ -37,7 +38,7 @@ func runCommandUntilFail(maxRuns int, command string, args ...string) {
 	red := "\033[31m"
 	green := "\033[32m"
 	gray := "\033[37m"
-	reset := "\033[0m" // Resets color back to default
+	reset := "\033[0m"
 
 	i := 1
 
@@ -50,13 +51,27 @@ func runCommandUntilFail(maxRuns int, command string, args ...string) {
 		cmd.Stderr = &stderr
 
 		cmd.Run()
-		output := out.String() + stderr.String() // Combine stdout and stderr
+		output := out.String() + stderr.String()
+
+		testName := extractTestName(output)
+		duration := extractDuration(output)
+		assertions := extractAssertions(output)
+
+		if testName == "" {
+			testName = "UnknownTest"
+		}
+		if duration == "" {
+			duration = "?.??s"
+		}
+		if assertions == "" {
+			assertions = "unknown assertions"
+		}
 
 		if strings.Contains(output, "FAIL") {
-			fmt.Printf("%s%s Run %d failed!%s\n", red, gray, i, reset)
+			fmt.Printf("%s%s Run %d: %s %s (%s, failed)%s\n", red, gray, i, testName, duration, assertions, reset)
 			break
 		} else {
-			fmt.Printf("%s%s Run %d passed!%s\n", green, gray, i, reset)
+			fmt.Printf("%s%s Run %d: %s %s (%s)%s\n", green, gray, i, testName, duration, assertions, reset)
 			i++
 		}
 
@@ -65,4 +80,35 @@ func runCommandUntilFail(maxRuns int, command string, args ...string) {
 			break
 		}
 	}
+}
+
+func extractTestName(output string) string {
+	// Match: PASS  Tests\Support\Something\TestName
+	re := regexp.MustCompile(`(?m)^\s*PASS\s+(Tests\\[^\r\n]+)`)
+	match := re.FindStringSubmatch(output)
+	if len(match) > 1 {
+		// Replace backslashes with slashes
+		return strings.ReplaceAll(match[1], `\`, `/`)
+	}
+	return ""
+}
+
+func extractDuration(output string) string {
+	// Match: Duration: 3.51s
+	re := regexp.MustCompile(`(?m)^\s*Duration:\s+([\d.]+s)`)
+	match := re.FindStringSubmatch(output)
+	if len(match) > 1 {
+		return match[1]
+	}
+	return ""
+}
+
+func extractAssertions(output string) string {
+	// Match line like: Tests:    2 passed (299 assertions)
+	re := regexp.MustCompile(`(?m)\((\d+)\s+assertions\)`)
+	match := re.FindStringSubmatch(output)
+	if len(match) > 1 {
+		return match[1] + " assertions"
+	}
+	return ""
 }
